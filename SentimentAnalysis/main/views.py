@@ -79,6 +79,7 @@ def result(request):
 
             # Creates a dataframe with a column for the tweets found
             df = pd.DataFrame(data=[tweet for tweet in Tweets], columns=['Tweets'])
+            pd.set_option("display.max_colwidth", -1)
 
             # Displays error message if the dataframe is empty
             if df.empty:
@@ -94,28 +95,39 @@ def result(request):
             # Applies getAnalysis to the Polarity column and creates Analysis column with the results
             df['Analysis'] = df['Polarity'].apply(getAnalysis)
             
+            # Lists for negative, positive and neutral tweets
+            Negative = []
+            Positive = []
+            Neutral = []
+
             # Counting how many tweets are negative, positive or neutral
             chart={"Negative":0, "Positive":0, "Neutral":0}
             for i in range(0,df.shape[0]):
                 if(df['Analysis'][i] == 'Negative'):
                     chart['Negative'] +=1
+                    Negative.append(df['Tweets'][i])
     
                 elif(df['Analysis'][i] == 'Positive'):
                     chart['Positive'] +=1
+                    Positive.append(df['Tweets'][i])
     
                 elif(df['Analysis'][i] == 'Neutral'):
                     chart['Neutral'] +=1
+                    Neutral.append(df['Tweets'][i])
             
             sumOfTweets = chart["Negative"] + chart["Positive"] + chart["Neutral"]
             
+            # Percentage of each result
             Negative_Percent = str(int((chart["Negative"] /  sumOfTweets) * 100)) + "%"
             Positive_Percent = str(int((chart["Positive"] /  sumOfTweets) * 100)) + "%"
             Neutral_Percent = str(int((chart["Neutral"] /  sumOfTweets) * 100)) + "%"
 
             return render(request, 
                     "main/result.html", 
-                    {"analysis":chart, "negative":Negative_Percent, "posi":Positive_Percent, "neu":Neutral_Percent, "Num": sumOfTweets})
-    
+                    {"analysis":chart, "negative":Negative_Percent, 
+                    "posi":Positive_Percent, "neu":Neutral_Percent, "Text":text, "NegativeTweets":Negative , "PositiveTweets":Positive,
+                    "NeutralTweets":Neutral})
+
         except Exception as e:
             print(e)
 
