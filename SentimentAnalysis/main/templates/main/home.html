@@ -1,0 +1,15 @@
+{% extends 'main/header.html' %}
+
+{% block content %}
+    
+    <h1 class="display-4">Tweepy Sentiments Analyzer</h1>
+
+    <form method="post" action="{% url 'main:result'%}">
+    {%csrf_token%}
+        <div class="input-group flex-nowrap">
+            <span class="input-group-text bg-info" id="addon-wrapping"><i class="bi bi-twitter"></i></span>
+            <input type="text" class="form-control" aria-label="Username" aria-describedby="addon-wrapping" name="text">
+        </div>
+    </form>
+    
+{% endblock %}
