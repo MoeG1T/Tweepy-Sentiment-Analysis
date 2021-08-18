@@ -27,6 +27,8 @@ for t in cursor:
 
 df = pd.DataFrame(data=[tweet.text for tweet in cursor], columns=['Tweets'])
 
+pd.set_option('display.max_colwidth', None)
+
 if df.empty:
     print("no")
 
@@ -41,6 +43,7 @@ def cleanTxt(text):
     text = re.sub(r'https?:\/\/\S+', '', text)
 
     return text
+
 
 #Cleaned text
 df['Tweets'] = df['Tweets'].apply(cleanTxt)
@@ -90,3 +93,6 @@ print(df)
 print(chart["Negative"])
 print(chart["Positive"])
 print(chart["Neutral"])
+
+for i in cursor:
+    print("https://twitter.com/twitter/statuses/" + strA(i.id) )

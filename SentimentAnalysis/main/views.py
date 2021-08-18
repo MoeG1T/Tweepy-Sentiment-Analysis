@@ -71,7 +71,7 @@ def result(request):
 
             # Searches for 500 tweets that contain the text
             cursor = api.search(text, count=1200, lang="en")
-            
+
             # Adds Tweets found to a set to remove duplicate ones
             Tweets = set()
             for t in cursor:
@@ -79,7 +79,18 @@ def result(request):
 
             # Creates a dataframe with a column for the tweets found
             df = pd.DataFrame(data=[tweet for tweet in Tweets], columns=['Tweets'])
-            pd.set_option("display.max_colwidth", -1)
+            pd.set_option('display.max_colwidth', None)
+
+            #  Gets the links of the tweets that exist in the Tweets set only
+            links = []
+            for i in Tweets:
+                for s in cursor:
+                    if s.text == i:
+                        links.append("https://twitter.com/twitter/statuses/" + str(s.id))
+                        break
+                    
+            # Creates a new column for links
+            df["Links"] = links
 
             # Displays error message if the dataframe is empty
             if df.empty:
@@ -94,26 +105,34 @@ def result(request):
             df['Polarity'] = df['Tweets'].apply(getPolarity)
             # Applies getAnalysis to the Polarity column and creates Analysis column with the results
             df['Analysis'] = df['Polarity'].apply(getAnalysis)
+
+            # Add the links to a new column in the dataframe
+            df["Links"] = links
             
-            # Lists for negative, positive and neutral tweets
-            Negative = []
-            Positive = []
-            Neutral = []
+            # List for tweet objects
+            objects = []
 
             # Counting how many tweets are negative, positive or neutral
+            # Creating Tweet object and adding it to objects list
             chart={"Negative":0, "Positive":0, "Neutral":0}
             for i in range(0,df.shape[0]):
                 if(df['Analysis'][i] == 'Negative'):
                     chart['Negative'] +=1
-                    Negative.append(df['Tweets'][i])
+ 
+                    TweetObject = Tweet(polarity="Negative", link=df["Links"][i], tweet= df["Tweets"][i])
+                    objects.append(TweetObject)
     
                 elif(df['Analysis'][i] == 'Positive'):
                     chart['Positive'] +=1
-                    Positive.append(df['Tweets'][i])
+                    
+                    TweetObject = Tweet(polarity="Positive", link=df["Links"][i], tweet= df["Tweets"][i])
+                    objects.append(TweetObject)
     
                 elif(df['Analysis'][i] == 'Neutral'):
                     chart['Neutral'] +=1
-                    Neutral.append(df['Tweets'][i])
+                    
+                    TweetObject = Tweet(polarity="Neutral", link=df["Links"][i], tweet= df["Tweets"][i])
+                    objects.append(TweetObject)
             
             sumOfTweets = chart["Negative"] + chart["Positive"] + chart["Neutral"]
             
@@ -125,8 +144,7 @@ def result(request):
             return render(request, 
                     "main/result.html", 
                     {"analysis":chart, "negative":Negative_Percent, 
-                    "posi":Positive_Percent, "neu":Neutral_Percent, "Text":text, "NegativeTweets":Negative , "PositiveTweets":Positive,
-                    "NeutralTweets":Neutral})
+                    "posi":Positive_Percent, "neu":Neutral_Percent, "Text":text, "Tweets":objects})
 
         except Exception as e:
             print(e)
@@ -135,3 +153,8 @@ def result(request):
                   "main/home.html", 
                   {})
                   
+class Tweet:
+     def __init__(self, polarity, link, tweet):
+        self.tweet = tweet
+        self.link = link
+        self.polarity = polarity

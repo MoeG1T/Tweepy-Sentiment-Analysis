@@ -19,11 +19,13 @@
             <p>
                 <div class="collapse" id="collapseExample">
                     <div class="card card-body">
-                        {% for s in NegativeTweets%}
-                            <ul>
-                                <li>{{s}} </li>
-                            </ul>
-                        {% endfor %}
+                        <ul>
+                            {% for o in Tweets%}
+                                    {% if o.polarity == "Negative" %}
+                                        <p><li><a href="{{o.link}}">{{o.tweet}}</a></li></p>
+                                    {% endif %}
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </p>
@@ -43,11 +45,13 @@
             <p>
                 <div class="collapse" id="collapseExample2">
                     <div class="card card-body">
-                         {% for s in PositiveTweets%}
-                            <ul>
-                                <li>{{s}} </li>
-                            </ul>
-                        {% endfor %}
+                        <ul>
+                            {% for o in Tweets%}
+                                    {% if o.polarity == "Neutral" %}
+                                        <p><li><a href="{{o.link}}">{{o.tweet}}</a></li></p>
+                                    {% endif %}
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </p>
@@ -67,11 +71,13 @@
             <p>
                 <div class="collapse" id="collapseExample3">
                     <div class="card card-body">
-                        {% for s in NeutralTweets%}
-                            <ul>
-                                <li>{{s}} </li>
-                            </ul>
-                        {% endfor %}
+                        <ul>
+                            {% for o in Tweets%}
+                                    {% if o.polarity == "Positive" %}
+                                       <p><li><a href="{{o.link}}">{{o.tweet}}</a></li></p>
+                                    {% endif %}
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </p>
