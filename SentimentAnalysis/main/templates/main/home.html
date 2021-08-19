@@ -4,12 +4,16 @@
     
     <h1 class="display-4">Tweepy Sentiments Analyzer</h1>
 
+    <h1 class="display-3" style="font-size: 23px;">Enter what's in your mind to see how people feel about it</h1>
+
+    <p>
     <form method="post" action="{% url 'main:result'%}">
     {%csrf_token%}
-        <div class="input-group flex-nowrap">
+        <div class="input-group flex-nowrap ">
             <span class="input-group-text bg-info" id="addon-wrapping"><i class="bi bi-twitter"></i></span>
             <input type="text" class="form-control" aria-label="Username" aria-describedby="addon-wrapping" name="text">
         </div>
     </form>
+    </p>
     
 {% endblock %}
