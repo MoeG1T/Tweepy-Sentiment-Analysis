@@ -55,7 +55,7 @@ ROOT_URLCONF = 'SentimentAnalysis.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [r'C:\Users\lubna\Tweepy\SentimentAnalysis\main\templates'],
+        'DIRS': [r'C:\Users\lubna\Tweepy\main\templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
