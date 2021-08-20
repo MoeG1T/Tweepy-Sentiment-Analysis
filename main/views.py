@@ -16,10 +16,10 @@ def homepage(request):
 # Returns the authenticated Tweepy api
 def get_tweepy():
     try:
-        consumer_key = "aCl9MzDUdij6MQC4wE6VmG4x3"
-        consumer_secret = "T7l1vWsRhSNgwj0FYNIEBsGYoqfCOAH0ZGFlhK1bL57LHAFeyQ"
-        access_token = "1422123417533403137-KhXMWgcGgK1KQ3CJShSGgKrS2wGUgF"
-        access_token_secret = "t3diDW8IqKe7PSjR9K0K9HQXqZ8r1AmqwL5ysYqu7W7kp"
+        consumer_key = os.environ.get('C_K')
+        consumer_secret = os.environ.get('C_S')
+        access_token = os.environ.get('A_T')
+        access_token_secret = os.environ.get('A_T_S')
 
         auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
         auth.set_access_token(access_token, access_token_secret)
@@ -152,7 +152,8 @@ def result(request):
     return render(request, 
                   "main/home.html", 
                   {})
-                  
+
+# Tweet class for storing tweet information         
 class Tweet:
      def __init__(self, polarity, link, tweet):
         self.tweet = tweet
