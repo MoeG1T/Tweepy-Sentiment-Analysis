@@ -1,1 +1,1 @@
-web: gunicorn SentimentAnalysis.wsgi
+web: gunicorn SentimentAnalysis.wsgi --log-file -
