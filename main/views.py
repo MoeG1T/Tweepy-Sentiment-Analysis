@@ -11,7 +11,7 @@ import os
 
 # Home and Intro page
 def homepage(request):
-    return render(request, "main/home.html", {})
+    return render(request, "home.html", {})
 
 # Returns the authenticated Tweepy api
 def get_tweepy():
